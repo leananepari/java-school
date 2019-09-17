@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//import javax.persistence.ResourceNotFoundException;
 import java.util.ArrayList;
+
+//import javax.persistence.ResourceNotFoundException;
 
 @Service(value = "courseService")
 public class CourseServiceImpl implements CourseService
@@ -18,7 +19,7 @@ public class CourseServiceImpl implements CourseService
     private CourseRepository courserepos;
 
     @Override
-    public ArrayList<Course> findAll() throws ResourceNotFoundException
+    public ArrayList<Course> findAll()
     {
         ArrayList<Course> list = new ArrayList<>();
         courserepos.findAll().iterator().forEachRemaining(list::add);
@@ -33,7 +34,7 @@ public class CourseServiceImpl implements CourseService
 
     @Transactional
     @Override
-    public void delete(long id) throws ResourceNotFoundException
+    public void delete(long id)
     {
         if (courserepos.findById(id).isPresent())
         {

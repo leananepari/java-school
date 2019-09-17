@@ -1,6 +1,7 @@
 package com.lambdaschool.school.controller;
 
 import com.lambdaschool.school.SchoolApplication;
+import com.lambdaschool.school.exceptions.UrlNotFoundException;
 import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.service.CourseService;
 import com.lambdaschool.school.view.CountStudentsInCourses;
@@ -26,7 +27,7 @@ public class CourseController
     private CourseService courseService;
 
     @GetMapping(value = "/courses", produces = {"application/json"})
-    public ResponseEntity<?> listAllCourses()
+    public ResponseEntity<?> listAllCourses() throws UrlNotFoundException
     {
         ArrayList<Course> myCourses = courseService.findAll();
         return new ResponseEntity<>(myCourses, HttpStatus.OK);

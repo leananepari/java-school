@@ -1,6 +1,7 @@
 package com.lambdaschool.school.handlers;
 
 import com.lambdaschool.school.exceptions.ResourceNotFoundException;
+import com.lambdaschool.school.exceptions.UrlNotFoundException;
 import com.lambdaschool.school.model.ErrorDetail;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         errorDetail.setTitle("Resource Not Found");
         errorDetail.setDetail(rnfe.getMessage());
         errorDetail.setDeveloperMessage(rnfe.getClass().getName());
+        return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UrlNotFoundException.class})
+    public ResponseEntity<?> handleUrlNotFoundException(UrlNotFoundException unfe, HttpServletRequest request)
+    {
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setTimestamp(new Date().getTime());
+        errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
+        errorDetail.setTitle("URL path not found");
+        errorDetail.setDetail(unfe.getMessage());
+        errorDetail.setDeveloperMessage(unfe.getClass().getName());
         return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
     }
 

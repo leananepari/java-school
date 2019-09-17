@@ -1,16 +1,16 @@
 package com.lambdaschool.school.service;
 
 import com.lambdaschool.school.exceptions.ResourceNotFoundException;
-import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.model.Student;
 import com.lambdaschool.school.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//import javax.persistence.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+//import javax.persistence.ResourceNotFoundException;
 
 @Service(value = "studentService")
 public class StudentServiceImpl implements StudentService
@@ -38,11 +38,17 @@ public class StudentServiceImpl implements StudentService
     {
         List<Student> list = new ArrayList<>();
         studrepos.findByStudnameContainingIgnoreCase(name).iterator().forEachRemaining(list::add);
-        return list;
+        if(list.size() > 0)
+        {
+            return list;
+        } else
+        {
+            throw new ResourceNotFoundException(name);
+        }
     }
 
     @Override
-    public void delete(long id) throws ResourceNotFoundException
+    public void delete(long id)
     {
         if (studrepos.findById(id).isPresent())
         {
