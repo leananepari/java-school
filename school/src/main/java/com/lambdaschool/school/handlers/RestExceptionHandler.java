@@ -11,6 +11,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,11 +56,35 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         errorDetail.setTitle(ex.getPropertyName());
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(request.getDescription(true));
+
         return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
+    {
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setTimestamp(new Date().getTime());
+        errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        errorDetail.setTitle("Method not supported");
+        errorDetail.setDetail(ex.getMessage());
+        errorDetail.setDeveloperMessage(request.getDescription(true));
+
+        return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
+    {
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setTimestamp(new Date().getTime());
+        errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        errorDetail.setTitle("URL NOT FOUND");
+        errorDetail.setDetail(ex.getMessage());
+        errorDetail.setDeveloperMessage(request.getDescription(true));
+
+        return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
     }
 }
