@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @RequestMapping(value = "/courses")
 public class CourseController
 {
-    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
     private CourseService courseService;
@@ -28,11 +28,6 @@ public class CourseController
     @GetMapping(value = "/courses", produces = {"application/json"})
     public ResponseEntity<?> listAllCourses()
     {
-        ApplicationContext ctx = SpringApplication.run(CourseController.class);
-        logger.info("TEST TEST");
-        DispatcherServlet dispatcherServlet = (DispatcherServlet) ctx.getBean("dispatcherServlet");
-        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
-
         ArrayList<Course> myCourses = courseService.findAll();
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }

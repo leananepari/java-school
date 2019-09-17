@@ -18,7 +18,6 @@ public interface CourseRepository extends CrudRepository<Course, Long>
     void deleteCourseFromStudcourses(long courseid);
 
     @Query(value = "SELECT s.courseid, coursename, count(studid) as countstudents FROM studcourses s INNER JOIN course c on s.courseid=c.courseid GROUP BY s.courseid, coursename", nativeQuery = true)
-//    @Query(value = "SELECT count(studid), coursename  FROM studcourses course WHERE studcourses.courseid = course.courseid GROUP BY coursename", nativeQuery = true)
     ArrayList<CountStudentsInCourses> getCountStudentsInCourse();
 }
 
