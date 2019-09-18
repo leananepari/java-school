@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 //import javax.persistence.ResourceNotFoundException;
 
+@Transactional
 @Service(value = "courseService")
 public class CourseServiceImpl implements CourseService
 {
@@ -48,7 +49,7 @@ public class CourseServiceImpl implements CourseService
     }
 
     @Override
-    public Course findCourseById(Long id) throws ResourceNotFoundException
+    public Course findCourseById(long id) throws ResourceNotFoundException
     {
         return courserepos.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
