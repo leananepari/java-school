@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +28,13 @@ public class CourseController
     @Autowired
     private CourseService courseService;
 
+    // http://localhost:2019/courses/courses/?page=0&size=1
+    // http://localhost:2019/courses/courses/?sort=name
     @GetMapping(value = "/courses", produces = {"application/json"})
-    public ResponseEntity<?> listAllCourses() throws UrlNotFoundException
+    public ResponseEntity<?> listAllCourses(@PageableDefault(page = 0, size = 10) Pageable pageable) throws UrlNotFoundException
     {
         logger.info("accessed");
-        ArrayList<Course> myCourses = courseService.findAll();
+        ArrayList<Course> myCourses = courseService.findAll(pageable);
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
 
