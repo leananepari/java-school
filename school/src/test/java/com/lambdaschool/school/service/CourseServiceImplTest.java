@@ -1,6 +1,7 @@
 package com.lambdaschool.school.service;
 
 import com.lambdaschool.school.SchoolApplication;
+import com.lambdaschool.school.exceptions.ResourceNotFoundException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -34,5 +36,19 @@ public class CourseServiceImplTest {
     public void findCourseById()
     {
         assertEquals("Java Back End", courseService.findCourseById(4).getCoursename());
+    }
+
+    @Test
+    public void deleteFound()
+    {
+        courseService.delete(6);
+        assertEquals(5, courseService.findAll(Pageable.unpaged()).size());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void deleteNotFound()
+    {
+        courseService.delete(100);
+        assertEquals(2, courseService.findAll(Pageable.unpaged()).size());
     }
 }
