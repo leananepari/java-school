@@ -38,6 +38,13 @@ public class CourseController
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/course/{courseId}", produces = {"application/json"})
+    public ResponseEntity<?> getCourseById(@PathVariable Long courseId)
+    {
+        Course c = courseService.findCourseById(courseId);
+        return new ResponseEntity<>(c, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/studcount", produces = {"application/json"})
     public ResponseEntity<?> getCountStudentsInCourses()
     {
