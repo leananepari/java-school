@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/courses")
@@ -31,10 +32,10 @@ public class CourseController
     // http://localhost:2019/courses/courses/?page=0&size=1
     // http://localhost:2019/courses/courses/?sort=name
     @GetMapping(value = "/courses", produces = {"application/json"})
-    public ResponseEntity<?> listAllCourses(@PageableDefault(page = 0, size = 10) Pageable pageable) throws UrlNotFoundException
+    public ResponseEntity<?> listAllCourses(@PageableDefault(page = 0, size = 10) Pageable pageable)
     {
         logger.info("accessed");
-        ArrayList<Course> myCourses = courseService.findAll(pageable);
+        List<Course> myCourses = courseService.findAll(pageable);
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
 

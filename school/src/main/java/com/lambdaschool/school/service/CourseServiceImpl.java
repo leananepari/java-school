@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import javax.persistence.ResourceNotFoundException;
 
@@ -21,9 +22,9 @@ public class CourseServiceImpl implements CourseService
     private CourseRepository courserepos;
 
     @Override
-    public ArrayList<Course> findAll(Pageable pageable)
+    public List<Course> findAll(Pageable pageable)
     {
-        ArrayList<Course> list = new ArrayList<>();
+        List<Course> list = new ArrayList<>();
         courserepos.findAll(pageable).iterator().forEachRemaining(list::add);
         return list;
     }
