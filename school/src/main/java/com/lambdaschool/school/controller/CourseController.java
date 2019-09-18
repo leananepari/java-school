@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @RequestMapping(value = "/courses")
 public class CourseController
 {
-//    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
     private CourseService courseService;
@@ -29,6 +29,7 @@ public class CourseController
     @GetMapping(value = "/courses", produces = {"application/json"})
     public ResponseEntity<?> listAllCourses() throws UrlNotFoundException
     {
+        logger.info("accessed");
         ArrayList<Course> myCourses = courseService.findAll();
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
