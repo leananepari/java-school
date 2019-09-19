@@ -55,4 +55,14 @@ public class CourseServiceImpl implements CourseService
         return courserepos.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
     }
+
+    @Override
+    public Course save(Course course) {
+        Course newCourse = new Course();
+
+        newCourse.setCoursename(course.getCoursename());
+
+        return courserepos.save(newCourse);
+    }
+
 }

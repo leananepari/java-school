@@ -74,17 +74,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
-    {
-        ErrorDetail errorDetail = new ErrorDetail();
-        errorDetail.setTimestamp(new Date().getTime());
-        errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
-
-        errorDetail.setTitle("URL NOT FOUND");
-        errorDetail.setDetail(ex.getMessage());
-        errorDetail.setDeveloperMessage(request.getDescription(true));
-
-        return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
+//    {
+//        ErrorDetail errorDetail = new ErrorDetail();
+//        errorDetail.setTimestamp(new Date().getTime());
+//        errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
+//
+//        errorDetail.setTitle("URL NOT FOUND");
+//        errorDetail.setDetail(ex.getMessage());
+//        errorDetail.setDeveloperMessage(request.getDescription(true));
+//
+//        return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
+//    }
 }
