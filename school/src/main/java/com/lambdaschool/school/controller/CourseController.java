@@ -3,6 +3,7 @@ package com.lambdaschool.school.controller;
 import com.lambdaschool.school.SchoolApplication;
 import com.lambdaschool.school.exceptions.UrlNotFoundException;
 import com.lambdaschool.school.model.Course;
+import com.lambdaschool.school.model.Student;
 import com.lambdaschool.school.service.CourseService;
 import com.lambdaschool.school.view.CountStudentsInCourses;
 import org.slf4j.Logger;
@@ -12,11 +13,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +57,25 @@ public class CourseController
     {
         ArrayList<CountStudentsInCourses> myList = courseService.getCountStudentsInCourse();
         return new ResponseEntity<>(myList, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/course/add",
+            consumes = {"application/json"},
+            produces = {"application/json"})
+    public ResponseEntity<?> addNewCourse(@Valid
+                                           @RequestBody
+                                                   Course newCourse) throws URISyntaxException
+    {
+        logger.info("POST /courses/course/add accessed. NewCourse: " + newCourse);
+
+        newCourse = courseService.save(newCourse);
+
+        // set the location header for the newly created resource
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newStudentURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/course/{courseId}").buildAndExpand(newCourse.getCourseid()).toUri();
+        responseHeaders.setLocation(newStudentURI);
+
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/courses/{courseid}")
