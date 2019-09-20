@@ -1,15 +1,16 @@
 package com.lambdaschool.school.service;
 
-import com.lambdaschool.school.model.Course;
+import com.lambdaschool.school.exceptions.ResourceNotFoundException;
 import com.lambdaschool.school.model.Student;
 import com.lambdaschool.school.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+//import javax.persistence.ResourceNotFoundException;
 
 @Service(value = "studentService")
 public class StudentServiceImpl implements StudentService
@@ -26,29 +27,35 @@ public class StudentServiceImpl implements StudentService
     }
 
     @Override
-    public Student findStudentById(long id) throws EntityNotFoundException
+    public Student findStudentById(long id) throws ResourceNotFoundException
     {
         return studrepos.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
+                .orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
     }
 
     @Override
-    public List<Student> findStudentByNameLike(String name)
+    public List<Student> findStudentByNameLike(String name) throws ResourceNotFoundException
     {
         List<Student> list = new ArrayList<>();
         studrepos.findByStudnameContainingIgnoreCase(name).iterator().forEachRemaining(list::add);
-        return list;
+        if(list.size() > 0)
+        {
+            return list;
+        } else
+        {
+            throw new ResourceNotFoundException(name);
+        }
     }
 
     @Override
-    public void delete(long id) throws EntityNotFoundException
+    public void delete(long id)
     {
         if (studrepos.findById(id).isPresent())
         {
             studrepos.deleteById(id);
         } else
         {
-            throw new EntityNotFoundException(Long.toString(id));
+            throw new ResourceNotFoundException(Long.toString(id));
         }
     }
 
@@ -67,7 +74,7 @@ public class StudentServiceImpl implements StudentService
     public Student update(Student student, long id)
     {
         Student currentStudent = studrepos.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
+                .orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
 
         if (student.getStudname() != null)
         {
