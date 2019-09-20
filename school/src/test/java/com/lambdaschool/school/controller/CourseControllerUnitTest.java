@@ -37,7 +37,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = SchoolApplication.class, secure = false)
+@WebMvcTest(value = CourseController.class, secure = false)
 public class CourseControllerUnitTest
 {
 
@@ -50,10 +50,10 @@ public class CourseControllerUnitTest
     @MockBean
     private CourseService courseService;
 
-//    private List<Course> courseList;
+    private List<Course> courseList;
 
-    private ArrayList<Course> courseList = new ArrayList<>();
-    private ArrayList<Instructor> instructList = new ArrayList<>();
+//    private ArrayList<Course> courseList = new ArrayList<>();
+//    private ArrayList<Instructor> instructList = new ArrayList<>();
 
 
     @Before
@@ -116,8 +116,8 @@ public class CourseControllerUnitTest
     public void listAllCourses() throws Exception
     {
         String apiUrl = "/courses/courses";
-        Mockito.when(courseService.findAll(Pageable.unpaged())).thenReturn(courseList);
-//        Mockito.when(courseService.findAll(Mockito.any(Pageable.class))).thenReturn(courseList);
+//        Mockito.when(courseService.findAll(Pageable.unpaged())).thenReturn(courseList);
+        Mockito.when(courseService.findAll(Mockito.any(Pageable.class))).thenReturn(courseList);
 
         RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
         MvcResult r = mockMvc.perform(rb).andReturn();

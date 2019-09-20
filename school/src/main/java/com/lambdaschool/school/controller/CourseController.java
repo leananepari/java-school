@@ -68,14 +68,19 @@ public class CourseController
     {
         logger.info("POST /courses/course/add accessed. NewCourse: " + newCourse);
 
-        newCourse = courseService.save(newCourse);
+        if (newCourse.getInstructor() == null || newCourse.getInstructor().getInstructname() == null)
+        {
+            return new ResponseEntity<>("Instructor is required.", HttpStatus.BAD_REQUEST);
+        } else {
+            newCourse = courseService.save(newCourse);
 
-        // set the location header for the newly created resource
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newStudentURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/course/{courseId}").buildAndExpand(newCourse.getCourseid()).toUri();
-        responseHeaders.setLocation(newStudentURI);
+            // set the location header for the newly created resource
+            HttpHeaders responseHeaders = new HttpHeaders();
+            URI newStudentURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/course/{courseId}").buildAndExpand(newCourse.getCourseid()).toUri();
+            responseHeaders.setLocation(newStudentURI);
 
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        }
     }
 
     @DeleteMapping("/courses/{courseid}")

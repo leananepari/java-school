@@ -27,5 +27,10 @@ public class CourseControllerIntegrationTest
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
     }
 
+    @Test
+    public void doSomething()
+    {
+
+    }
 
 }
